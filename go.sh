@@ -1,18 +1,18 @@
 #!/bin/zsh
 set -e
 
-CFL_SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-CFL_USERNAME="$(id -un)"
-CFL_USERGROUP="$(id -gn)"
+CF_SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+CF_USER_NAME="$(id -un)"
+CF_USER_GROUP="$(id -gn)"
 
-cd "$CFL_SCRIPT_DIR"
+cd "$CF_SCRIPT_DIR"
 if [ -d "../tmp" ]; then
   rm -rf ../tmp
 fi
 mkdir ../tmp
 cd ../tmp
 
-CFL_GO_VERSIONS="$(curl -s 'https://golang.google.cn/dl/?mode=json' --compressed \
+CF_GO_VERSIONS="$(curl -s 'https://golang.google.cn/dl/?mode=json' --compressed \
   -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:131.0) Gecko/20100101 Firefox/131.0' \
   -H 'Accept: */*' \
   -H 'Accept-Language: zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2' \
@@ -27,14 +27,15 @@ CFL_GO_VERSIONS="$(curl -s 'https://golang.google.cn/dl/?mode=json' --compressed
   -H 'Cache-Control: no-cache' \
   -H 'TE: trailers')"
 
-CFL_GO_FILE="$(echo $CFL_GO_VERSIONS | jq -r '.[0] | .files[] | select(.os == "linux" and .arch == "amd64" and .kind == "archive") | .filename')"
-echo $CFL_GO_FILE
-curl -L -o go.tar.gz https://golang.google.cn/dl/$CFL_GO_FILE
+CF_GO_FILE="$(echo $CF_GO_VERSIONS | jq -r '.[0] | .files[] | select(.os == "linux" and .arch == "amd64" and .kind == "archive") | .filename')"
+echo $CF_GO_FILE
+curl -L -o go.tar.gz https://golang.google.cn/dl/$CF_GO_FILE
 tar -xvzf go.tar.gz
-chown -R $CFL_USERNAME:$CFL_USERGROUP ./go
+chown -R $CF_USER_NAME:$CF_USER_GROUP ./go
 if [ -d "../go" ]; then
   rm -rf ../go
 fi
 mv ./go ..
 cd ..
 rm -rf ./tmp
+

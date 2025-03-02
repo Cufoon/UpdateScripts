@@ -13,13 +13,17 @@ mkdir ../tmp
 cd ../tmp
 
 source ~/.zshrc_cufoon_proxy
-curl -L -o nvim.tar.gz https://github.com/neovim/neovim/releases/latest/download/nvim-linux64.tar.gz
+
+CF_FILE_NAME="nvim-linux-x86_64"
+
+curl -L -o nvim.tar.gz https://github.com/neovim/neovim/releases/latest/download/$CF_FILE_NAME.tar.gz
 source ~/.zshrc_cufoon_proxy_off
 tar -xvzf nvim.tar.gz
-chown -R $CF_USER_NAME:$CF_USER_GROUP ./nvim-linux64
+
+chown -R $CF_USER_NAME:$CF_USER_GROUP ./$CF_FILE_NAME
 if [ -d "../neovim" ]; then
   rm -rf ../neovim
 fi
-mv ./nvim-linux64 ../neovim
+mv ./$CF_FILE_NAME ../neovim
 cd ..
 rm -rf ./tmp
